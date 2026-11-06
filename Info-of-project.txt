@@ -1,0 +1,55 @@
+2. ใช้ระบบอะไรรันบ้าง ดาต้าเบส ภาษาโค้ด อธิบายอย่างละเอียด
+
+ระบบนี้พัฒนาเป็นแบบ Full-stack Web Application ระดับ Enterprise ตามสถาปัตยกรรมของ Next.js โดยมีองค์ประกอบทั้งหมดดังนี้:
+
+1) Frontend & Web Framework (ส่วนแสดงผลและส่วนควบคุม):
+Next.js 14 (App Router): เฟรมเวิร์กหลักของระบบ ทำหน้าที่เป็นทั้ง Web Server, การจัดการเส้นทางหน้าเว็บ (Routing), Server-Side Rendering (SSR) และ API Endpoints
+React 18: ไลบรารีสำหรับสร้างคอมโพเนนต์ส่วนติดต่อผู้ใช้ (UI Components) และ State Management
+Tailwind CSS: เครื่องมือจัดสไตล์หน้าเว็บ จัด Layout อัตราส่วน กล่องข้อมูล ตาราง และการตั้งค่าหน้ากระดาษ @page { size: A4 portrait } สำหรับพิมพ์เอกสาร A4 และบันทึกเป็น PDF
+Lucide React: ชุดไอคอนแบบ Vector SVG ที่ใช้บนหน้าจอทั้งหมด (เช่น ไอคอนพิมพ์, ย้อนกลับ, ถังขยะ, เช็กถูก)
+2) ภาษาคอมพิวเตอร์ที่ใช้เขียน (Languages):
+TypeScript (.ts, .tsx): ใช้เขียนโค้ดหน้าเว็บทั้งหมด 100% ทั้งในโฟลเดอร์ app/ และ lib/ เพื่อตรวจสอบ Type ข้อมูล ป้องกัน Runtime Error
+JavaScript (.js / .mjs): ใช้สำหรับไฟล์คอนฟิกของระบบ เช่น next.config.mjs, tailwind.config.ts, launch-desktop.js, prisma/seed.js
+PostgreSQL SQL: ภาษาคำสั่งสำหรับสร้างตาราง, Foreign Key, Constraints, และ Views ในไฟล์ DDL
+3) ฐานข้อมูลและการจัดเก็บข้อมูล (Database & Persistence Layer):
+
+ระบบรองรับ 2 รูปแบบคู่ขนานกัน:
+
+ฐานข้อมูลจริง (Production Mode): ใช้ PostgreSQL ร่วมกับ Prisma ORM (@prisma/client) มีสคีมาครบถ้วนตามไฟล์ prisma/schema.prisma
+ระบบจำลองข้อมูลแบบออฟไลน์ (Client-Side Storage Mode): มีระบบจัดการข้อมูลผ่าน localStorage ใน lib/storage.ts ซึ่งจะทำงานอัตโนมัติ ทำให้สามารถเปิดเว็บ ทดสอบ เพิ่มคำสั่งซื้อ ออกใบเสนอราคา ออกใบเสร็จ และดูรายงานยอดได้ทันที โดยข้อมูลไม่สูญหายแม้ไม่ได้เชื่อมต่อกับ PostgreSQL Server ภายนอก
+4) Runtime Environment:
+Node.js: รันบน Node.js (เวอร์ชัน 18 ขึ้นไป หรือ 20+)
+
+3. ที่อยู่ของไฟล์ Source Code อยู่ตรงไหน และถ้าจะเปิดโปรเจกต์ใน VS Code ต้องเริ่มจากตรงไหน?
+1) ที่อยู่โฟลเดอร์โปรเจกต์ (Project Path):
+text
+C:\KU\HW\SAandPre-Co\cluade_SA
+2) แผนผังโฟลเดอร์ Source Code สำคัญ:
+app/ → โฟลเดอร์โค้ดหน้าจอหลักทั้งหมด:
+app/orders/page.tsx → หน้าคำสั่งซื้อ, รายละเอียด และหน้ารายงานยอด 12 เดือน A4
+app/quotations/page.tsx → หน้ารายการใบเสนอราคา และหน้าเอกสารใบเสนอราคา A4
+app/receipts/page.tsx → หน้ารายการใบเสร็จ, อัปเดตชำระเงิน และหน้าเอกสารใบเสร็จ A4
+app/print-jobs/page.tsx → หน้ารายการใบสั่งผลิต
+app/production-tracking/page.tsx → หน้าติดตามสถานะผลิตและบันทึก QC
+app/delivery-tracking/page.tsx → หน้าติดตามการจัดส่ง
+app/components/Sidebar.tsx → แถบเมนูด้านซ้ายสีดำ
+lib/ → โฟลเดอร์ฟังก์ชันการคำนวณและฐานข้อมูล:
+lib/storage.ts → ฐานข้อมูล Client-side และ Mock Data
+lib/dateUtils.ts → ฟังก์ชันแปลงรูปแบบวันที่เอกสาร (วว/ดด/ปปปป)
+prisma/ → โฟลเดอร์ไฟล์ฐานข้อมูล PostgreSQL (schema.prisma และ seed.js)
+3) วิธีเปิดโปรเจกต์ใน Visual Studio Code (VS Code):
+วิธีที่ 1 (ผ่านโปรแกรม VS Code):
+เปิดโปรแกรม Visual Studio Code
+ไปที่เมนูด้านบนซ้าย: File → เลือก Open Folder... (หรือกดปุ่มลัด Ctrl + K แล้วกด Ctrl + O)
+ไปที่โฟลเดอร์: C:\KU\HW\SAandPre-Co\cluade_SA
+คลิกปุ่ม Select Folder
+
+4) วิธีเริ่มรันระบบใน VS Code:
+เปิด Terminal ใน VS Code โดยกดปุ่มลัด Ctrl + ` (Control + Backtick)
+พิมพ์คำสั่งเพื่อรันโปรเจกต์ในโหมด Development:
+bash
+npm run dev
+เปิดเว็บเบราว์เซอร์ (Chrome / Edge) แล้วพิมพ์ URL:
+text
+http://localhost:3000
+ระบบจะแสดงหน้าจอระบบบริหารงานร้านวันชัยการพิมพ์พร้อมใช้งานทันทีครับ
